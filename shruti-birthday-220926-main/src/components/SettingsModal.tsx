@@ -1,0 +1,527 @@
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  X,
+  Upload,
+  Trash2,
+  Plus,
+  RefreshCw,
+  Music,
+  Heart,
+  Image as ImageIcon,
+  Key,
+  Mail,
+  Cake,
+  Check,
+} from 'lucide-react';
+import { AppConfig, PhotoItem } from '../types';
+
+interface SettingsModalProps {
+  isOpen: boolean;
+  config: AppConfig;
+  onClose: () => void;
+  onSave: (newConfig: AppConfig) => void;
+  onResetDefaults: () => void;
+  onClearPhotos: () => void;
+  onReplay: () => void;
+}
+
+export const SettingsModal: React.FC<SettingsModalProps> = ({
+  isOpen,
+  config,
+  onClose,
+  onSave,
+  onResetDefaults,
+  onClearPhotos,
+  onReplay,
+}) => {
+  const [activeTab, setActiveTab] = useState<'photos' | 'text' | 'letter' | 'audio'>('photos');
+  const [tempConfig, setTempConfig] = useState<AppConfig>(config);
+  const [savedBadge, setSavedBadge] = useState(false);
+
+  const mainPhotoInputRef = useRef<HTMLInputElement>(null);
+  const galleryPhotosInputRef = useRef<HTMLInputElement>(null);
+  const audioInputRef = useRef<HTMLInputElement>(null);
+
+  // Sync when opened
+  React.useEffect(() => {
+    if (isOpen) {
+      setTempConfig(config);
+    }
+  }, [isOpen, config]);
+
+  const handleMainPhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (ev.target?.result) {
+          setTempConfig((prev) => ({
+            ...prev,
+            mainPhoto: ev.target!.result as string,
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleGalleryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      (Array.from(files) as File[]).forEach((file: File, i: number) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          if (ev.target?.result) {
+            const newPhoto: PhotoItem = {
+              id: `custom-${Date.now()}-${i}`,
+              url: ev.target!.result as string,
+              caption: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ') || 'Special Memory ❤️',
+              date: 'Cherished Moment',
+              rotation: (Math.random() * 14) - 7,
+              x: Math.floor(Math.random() * 70) + 15,
+              y: Math.floor(Math.random() * 60) + 20,
+              z: Math.floor(Math.random() * 80) - 20,
+              scale: 1,
+            };
+            setTempConfig((prev) => ({
+              ...prev,
+              galleryPhotos: [...prev.galleryPhotos, newPhoto],
+            }));
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const handleAudioUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (ev.target?.result) {
+          setTempConfig((prev) => ({
+            ...prev,
+            customAudioUrl: ev.target!.result as string,
+            musicTitle: file.name.replace(/\.[^/.]+$/, ''),
+          }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveGalleryPhoto = (id: string) => {
+    setTempConfig((prev) => ({
+      ...prev,
+      galleryPhotos: prev.galleryPhotos.filter((p) => p.id !== id),
+    }));
+  };
+
+  const handleUpdateCaption = (id: string, caption: string) => {
+    setTempConfig((prev) => ({
+      ...prev,
+      galleryPhotos: prev.galleryPhotos.map((p) => (p.id === id ? { ...p, caption } : p)),
+    }));
+  };
+
+  const handleSave = () => {
+    onSave(tempConfig);
+    setSavedBadge(true);
+    setTimeout(() => {
+      setSavedBadge(false);
+      onClose();
+    }, 600);
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm select-none">
+        <motion.div
+          initial={{ scale: 0.92, opacity: 0, y: 20 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0.92, opacity: 0, y: 20 }}
+          className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-pink-200 overflow-hidden flex flex-col max-h-[90vh]"
+        >
+          {/* Top Bar */}
+          <div className="px-6 py-4 border-b border-pink-100 flex items-center justify-between bg-gradient-to-r from-pink-50 via-rose-50 to-pink-50">
+            <div className="flex items-center gap-2">
+              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" />
+              <h2 className="font-serif text-xl sm:text-2xl font-bold text-gray-800">
+                Customize Experience ✨
+              </h2>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-pink-100 transition-colors"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Navigation Tabs */}
+          <div className="flex border-b border-pink-100 bg-pink-50/40 px-6 gap-2 sm:gap-4 overflow-x-auto">
+            {[
+              { id: 'photos', label: 'Photos 📸', icon: ImageIcon },
+              { id: 'text', label: 'Names & Passcode 🔑', icon: Key },
+              { id: 'letter', label: 'Love Letter 💌', icon: Mail },
+              { id: 'audio', label: 'Music 🎵', icon: Music },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`py-3 px-3 sm:px-4 text-xs sm:text-sm font-semibold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
+                  activeTab === tab.id
+                    ? 'border-pink-500 text-pink-600 bg-white/60 rounded-t-lg'
+                    : 'border-transparent text-gray-500 hover:text-pink-500'
+                }`}
+              >
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Tab Content Body */}
+          <div className="p-6 overflow-y-auto flex-1 space-y-6 custom-scrollbar text-left select-text">
+            {/* TAB 1: PHOTOS */}
+            {activeTab === 'photos' && (
+              <div className="space-y-6">
+                {/* Main Polaroid Photo */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-800 mb-2">
+                    Main Polaroid Photo (Landing Scene)
+                  </label>
+                  <div className="flex items-center gap-4">
+                    <div className="w-20 h-24 rounded-lg overflow-hidden border-2 border-pink-300 shadow-md bg-gray-100 flex-shrink-0">
+                      <img
+                        src={tempConfig.mainPhoto}
+                        alt="Main Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => mainPhotoInputRef.current?.click()}
+                        className="px-4 py-2 bg-pink-50 hover:bg-pink-100 text-pink-700 text-xs sm:text-sm font-medium rounded-xl border border-pink-200 flex items-center gap-2 transition-colors cursor-pointer"
+                      >
+                        <Upload size={16} /> Change Main Photo
+                      </button>
+                      <p className="text-xs text-gray-500">
+                        Supports JPG, PNG, WEBP from your phone or device
+                      </p>
+                      <input
+                        ref={mainPhotoInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleMainPhotoUpload}
+                        className="hidden"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Gallery Photos (3D Space Scene) */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-bold text-gray-800">
+                      3D Space Gallery Photos ({tempConfig.galleryPhotos.length})
+                    </label>
+                    <button
+                      onClick={() => galleryPhotosInputRef.current?.click()}
+                      className="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Plus size={14} /> Add Multiple Photos
+                    </button>
+                    <input
+                      ref={galleryPhotosInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleGalleryUpload}
+                      className="hidden"
+                    />
+                  </div>
+
+                  {/* Photos Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {tempConfig.galleryPhotos.map((photo) => (
+                      <div
+                        key={photo.id}
+                        className="relative group rounded-xl overflow-hidden border border-pink-200 bg-pink-50/50 p-2 flex flex-col gap-2"
+                      >
+                        <div className="aspect-square w-full rounded-lg overflow-hidden bg-black/10 relative">
+                          <img
+                            src={photo.url}
+                            alt="Memory"
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            onClick={() => handleRemoveGalleryPhoto(photo.id)}
+                            className="absolute top-1 right-1 p-1 bg-red-500 hover:bg-red-600 text-white rounded-full shadow-md transition-colors"
+                            title="Remove Photo"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={photo.caption}
+                          placeholder="Caption..."
+                          onChange={(e) => handleUpdateCaption(photo.id, e.target.value)}
+                          className="w-full text-[11px] px-2 py-1 bg-white rounded border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Clear / Reset buttons */}
+                <div className="pt-4 border-t border-pink-100 flex flex-wrap gap-2 justify-between">
+                  <button
+                    onClick={onClearPhotos}
+                    className="px-3 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition-colors"
+                  >
+                    Clear All Photos
+                  </button>
+                  <button
+                    onClick={onResetDefaults}
+                    className="px-3 py-1.5 text-xs text-gray-600 hover:bg-gray-100 rounded-lg border border-gray-200 transition-colors flex items-center gap-1"
+                  >
+                    <RefreshCw size={13} /> Reset Demo Photos
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: NAMES & PASSCODE */}
+            {activeTab === 'text' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Recipient Name / Nickname
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.recipientName}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, recipientName: e.target.value })
+                    }
+                    placeholder="e.g. My Girl, Sarah, Sweetheart"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Sender Signature Name
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.senderName}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, senderName: e.target.value })
+                    }
+                    placeholder="e.g. Yours Forever, Alex"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Passcode (4 Digits)
+                  </label>
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={tempConfig.passcode}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, passcode: e.target.value })
+                    }
+                    placeholder="e.g. 1234 or 2024"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-mono font-bold"
+                  />
+                  <span className="text-[11px] text-gray-500 mt-1 block">
+                    Tip: Enter any 4 numbers (default is 1234).
+                  </span>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Polaroid Bottom Caption
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.polaroidText}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, polaroidText: e.target.value })
+                    }
+                    placeholder="e.g. Happy Birthday ❤️"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Cake Sliced Celebration Heading
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.cakeCelebrationText}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, cakeCelebrationText: e.target.value })
+                    }
+                    placeholder="e.g. Happy Birthday, My Girl! 💖"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: LOVE LETTER */}
+            {activeTab === 'letter' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Letter Title
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.letterTitle}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, letterTitle: e.target.value })
+                    }
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Greeting Line
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.letterGreeting}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, letterGreeting: e.target.value })
+                    }
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Letter Message Paragraphs (One per line)
+                  </label>
+                  <textarea
+                    rows={6}
+                    value={tempConfig.letterBody.join('\n\n')}
+                    onChange={(e) =>
+                      setTempConfig({
+                        ...tempConfig,
+                        letterBody: e.target.value
+                          .split('\n\n')
+                          .filter((p) => p.trim() !== ''),
+                      })
+                    }
+                    placeholder="Write your beautiful love message here..."
+                    className="w-full p-3.5 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm leading-relaxed"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">
+                    Letter Closing
+                  </label>
+                  <input
+                    type="text"
+                    value={tempConfig.letterClosing}
+                    onChange={(e) =>
+                      setTempConfig({ ...tempConfig, letterClosing: e.target.value })
+                    }
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-pink-200 focus:outline-none focus:border-pink-400 text-gray-800 text-sm font-medium"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: AUDIO */}
+            {activeTab === 'audio' && (
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-800 mb-1">
+                    Background Music Track
+                  </label>
+                  <p className="text-xs text-gray-600 mb-3">
+                    Upload your favorite song (MP3, WAV) or enjoy the built-in romantic melody synthesizer.
+                  </p>
+
+                  <div className="p-4 rounded-2xl bg-pink-50/70 border border-pink-200 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2.5 bg-pink-500 text-white rounded-xl shadow-md">
+                        <Music size={20} />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-800">
+                          {tempConfig.musicTitle || 'Romantic Melody 🎵'}
+                        </p>
+                        <span className="text-xs text-pink-600 font-medium">
+                          {tempConfig.customAudioUrl ? 'Custom Song Uploaded' : 'Built-in Romantic Chimes'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => audioInputRef.current?.click()}
+                      className="px-3.5 py-2 bg-white hover:bg-pink-100 text-pink-700 text-xs font-semibold rounded-xl border border-pink-300 transition-colors flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <Upload size={15} /> Upload MP3
+                    </button>
+                    <input
+                      ref={audioInputRef}
+                      type="file"
+                      accept="audio/*"
+                      onChange={handleAudioUpload}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Bottom Actions */}
+          <div className="px-6 py-4 border-t border-pink-100 bg-pink-50/40 flex items-center justify-between">
+            <button
+              onClick={() => {
+                onClose();
+                onReplay();
+              }}
+              className="px-4 py-2 text-xs sm:text-sm font-semibold text-gray-600 hover:text-pink-600 hover:bg-pink-100/60 rounded-xl transition-colors cursor-pointer"
+            >
+              🔄 Replay Journey
+            </button>
+
+            <div className="flex items-center gap-2">
+              <button
+                onClick={onClose}
+                className="px-4 py-2 text-xs sm:text-sm font-semibold text-gray-500 hover:text-gray-700 rounded-xl transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className="px-6 py-2.5 bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 hover:from-pink-600 hover:to-rose-600 text-white font-bold text-xs sm:text-sm rounded-xl shadow-md shadow-pink-500/20 flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                {savedBadge ? <Check size={16} /> : null}
+                <span>{savedBadge ? 'Saved! ✨' : 'Save Changes'}</span>
+              </button>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+};

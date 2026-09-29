@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 380px;
+}
+
+@layer base {
+  :root {
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-script: 'Dancing Script', 'Sacramento', cursive;
+    --font-hand: 'Caveat', cursive;
+  }
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-script {
+  font-family: var(--font-script);
+}
+
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+/* Pink Gingham / Plaid Pattern (matches video aesthetic) */
+.bg-plaid-pink {
+  background-color: #fff4f7;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 24px, rgba(244, 114, 182, 0.1) 24px, rgba(244, 114, 182, 0.1) 26px),
+    repeating-linear-gradient(90deg, transparent, transparent 24px, rgba(244, 114, 182, 0.1) 24px, rgba(244, 114, 182, 0.1) 26px),
+    repeating-linear-gradient(45deg, transparent, transparent 48px, rgba(251, 207, 232, 0.2) 48px, rgba(251, 207, 232, 0.2) 50px),
+    repeating-linear-gradient(-45deg, transparent, transparent 48px, rgba(251, 207, 232, 0.2) 48px, rgba(251, 207, 232, 0.2) 50px);
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(244, 114, 182, 0.25) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+}
+
+/* Custom scrollbar for letter */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(253, 230, 238, 0.4);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(244, 114, 182, 0.5);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(236, 72, 153, 0.7);
+}
+
+/* Subtle glow animations */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+@keyframes float-heart {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.85) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-55vh) translateX(18px) scale(1.08) rotate(12deg);
+    opacity: 0.8;
+  }
+  88% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-115vh) translateX(-18px) scale(1.2) rotate(-15deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flame-flicker {
+  0%, 100% {
+    transform: scale(1) rotate(-1deg);
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+  }
+  25% {
+    transform: scale(1.08, 0.95) rotate(2deg);
+    filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.9));
+  }
+  50% {
+    transform: scale(0.95, 1.05) rotate(-2deg);
+    filter: drop-shadow(0 0 10px rgba(251, 146, 60, 0.8));
+  }
+  75% {
+    transform: scale(1.04, 1.02) rotate(1deg);
+    filter: drop-shadow(0 0 12px rgba(252, 211, 77, 0.9));
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 5s ease-in-out infinite;
+}
+
+.animate-flame {
+  animation: flame-flicker 1.2s ease-in-out infinite;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* 3D perspective wrapper */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.perspective-2000 {
+  perspective: 2000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}

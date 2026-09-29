@@ -1,0 +1,8 @@
+{
+  "name": "Romantic Cinematic Birthday & Love Experience",
+  "description": "A delightful pastel pink 17th birthday experience for Somyashree with passcode 2910, interactive cake builder, sweet friendship letter, inspiring reasons, and celebration messages.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
