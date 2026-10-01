@@ -71,7 +71,7 @@ export const CountdownPasscodeScene: React.FC<CountdownPasscodeSceneProps> = ({
       >
         {/* Time Stamp (Matching Video 2 00:02) */}
         <h2 className="text-4xl xs:text-5xl sm:text-6xl font-mono font-bold tracking-wider text-pink-100 mb-0.5">
-          22:09
+          29:10
         </h2>
         <p className="text-xs xs:text-sm sm:text-base text-pink-300/80 font-medium flex items-center gap-1.5 mb-3 sm:mb-5">
           <span>Birthday Surprise</span>
