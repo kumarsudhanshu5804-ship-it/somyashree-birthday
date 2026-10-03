@@ -17,7 +17,13 @@ export const DEFAULT_CONFIG: AppConfig = {
     'Every day is better because I have such a great friend to talk to, laugh with, and share all the memorable moments with 💕',
     'Thank you for always being supportive, for giving great advice, for the laughs when needed most, and for being such a kind and special friend in my life 🥰',
     'May this 17th year bring you boundless happiness, endless smiles, all your biggest dreams coming true, and lots of great moments ahead! 🚀',
-    'Never stop being your radiant, kind-hearted, and wonderfully cheerful self!'
+    'Never stop being your radiant, kind-hearted, and wonderfully cheerful self!',
+    'And yes... I have a special name for you- my Angry Bird 🐦',
+    "I don't know what the reason is, but somehow we haven't talked for the past few days. And honestly, I don't even know what to say about it.",
+    'A few days ago, you gave me a perfume and my favourite flower — a sunflower 🌻. It may look like a simple gift, but for me, it means so much more.',
+    "I'm sorry, my Angry Bird. You are someone so special that I don't think words in this world could ever properly explain what you mean to me.",
+    'And yes, I know, "Sorry is just a word for you." But I don’t want to say sorry just because I want you to talk to me again.',
+    "I won't ask you to talk to me. I won't force anything. I just want you to be happy. Always. Keep smiling, keep shining, and take care of yourself, my sunshine.🥰🌻🎈",
   ],
   letterClosing: 'Always wishing you the very best, your friend forever 💕',
   musicTitle: 'Cute Birthday Melody 🎵'
@@ -26,9 +32,9 @@ export const DEFAULT_CONFIG: AppConfig = {
 export const BESTIE_REASONS: BestieReason[] = [
   {
     id: 1,
-    icon: '😂',
-    title: 'Your Contagious Laugh',
-    text: 'How you laugh at funny moments and turn simple days into cheerful, happy memories!'
+    icon: '🌻',
+     title: 'Your thoughtful Heart🌻',
+    text: "I'll alwaays remember the little things you do for me."
   },
   {
     id: 2,
@@ -38,7 +44,7 @@ export const BESTIE_REASONS: BestieReason[] = [
   },
   {
     id: 3,
-    icon: '🍟',
+    icon: '🍨',
     title: 'ice creem & Food Partner',
     text: 'Nobody appreciates good food, random snack cravings, and fun long conversations quite like you!'
   },
