@@ -43,9 +43,9 @@ const CAKE_FLAVORS: CakeFlavor[] = [
   { id: 'chocolate', name: 'Chocolate', subtitle: 'Rich & Decadent', spongeColor: '#5C2E14', textColor: '#FFFFFF', iconColor: '#78350F' },
   { id: 'strawberry', name: 'Strawberry', subtitle: 'Fruity Delight', spongeColor: '#F472B6', textColor: '#831843', iconColor: '#FB7185' },
   { id: 'red_velvet', name: 'Red Velvet', subtitle: 'Classic Romance', spongeColor: '#991B1B', textColor: '#FFFFFF', iconColor: '#DC2626' },
-  { id: 'lemon', name: 'Lemon', subtitle: 'Zesty Fresh', spongeColor: '#FDE047', textColor: '#854D0E', iconColor: '#FACC15' },
-  { id: 'matcha', name: 'Matcha', subtitle: 'Earthy Bliss', spongeColor: '#84CC16', textColor: '#14532D', iconColor: '#65A30D' },
-  { id: 'rainbow', name: 'Rainbow', subtitle: 'Bright & Festive', spongeColor: 'linear-gradient(135deg, #F43F5E, #FBBF24, #10B981, #3B82F6, #8B5CF6)', textColor: '#1E1B4B', iconColor: '#EC4899' },
+  { id: 'Mango', name: 'Mango', subtitle: 'Tropical Delight', spongeColor: '#FCD34D', textColor: '#92400E', iconColor: '#FBBF24' },
+  { id: 'rasmalai', name: 'Rasmalai', subtitle: 'Sweet & Creamy', spongeColor: '#FDE68A', textColor: '#92400E', iconColor: '#FBBF24' },
+  { id: 'butterscotch', name: 'Butterscotch', subtitle: 'Caramel Delight', spongeColor: '#FDE68A', textColor: '#92400E', iconColor: '#FBBF24' },
 ];
 
 // Frosting colors
@@ -76,7 +76,7 @@ const TOPPINGS_CATALOG: ToppingItem[] = [
   { id: 'cherry', name: 'Cherry', emoji: '🍒', category: 'FRUITS' },
   { id: 'blueberry', name: 'Blueberry', emoji: '🫐', category: 'FRUITS' },
   { id: 'orange', name: 'Orange', emoji: '🍊', category: 'FRUITS' },
-  { id: 'grape', name: 'Grapes', emoji: '🍇', category: 'FRUITS' },
+  { id: 'mango', name: 'Mango', emoji: '🥭', category: 'FRUITS' },
   { id: 'kiwi', name: 'Kiwi', emoji: '🥝', category: 'FRUITS' },
 
   // SWEETS
@@ -87,7 +87,7 @@ const TOPPINGS_CATALOG: ToppingItem[] = [
   { id: 'candy', name: 'Candy', emoji: '🍬', category: 'SWEETS' },
 
   // FLORAL
-  { id: 'rose', name: 'Rose', emoji: '🌹', category: 'FLORAL' },
+  { id: 'lilly', name: 'Lilly', emoji: '🌷', category: 'FLORAL' },
   { id: 'blossom', name: 'Cherry Blossom', emoji: '🌸', category: 'FLORAL' },
   { id: 'hibiscus', name: 'Hibiscus', emoji: '🌺', category: 'FLORAL' },
   { id: 'sunflower', name: 'Sunflower', emoji: '🌻', category: 'FLORAL' },
@@ -133,7 +133,7 @@ export const CakeBakerScene: React.FC<CakeBakerSceneProps> = ({
     { id: 1, emoji: '🍓', name: 'Strawberry', x: 26, y: 38 },
     { id: 2, emoji: '🍒', name: 'Cherry', x: 74, y: 40 },
     { id: 3, emoji: '🧿', name: 'Nazar Battu', x: 50, y: 30 },
-    { id: 4, emoji: '🌸', name: 'Blossom', x: 38, y: 55 },
+    { id: 4, emoji: '🌷', name: 'Lilly', x: 38, y: 55 },
     { id: 5, emoji: '🍫', name: 'Chocolate', x: 62, y: 52 },
   ]);
 
