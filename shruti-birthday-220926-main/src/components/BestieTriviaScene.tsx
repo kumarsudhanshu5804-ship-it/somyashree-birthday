@@ -18,7 +18,7 @@ interface Question {
 const TRIVIA_QUESTIONS: Question[] = [
   {
     id: 1,
-    question: "Who is the certified mastermind behind our spontaneous 2-hour long fun calls? ☕📞",
+    question: "Who is the certified mastermind behind our spontaneous 2-hour long fun chats? ☕💬",
     options: [
       { text: "Somyashree, with all the exciting stories! 👑", isCorrect: true, reaction: "Haha 100%! You never run out of fun stories! 😂" },
       { text: "Both of us chatting away non-stop! ☕", isCorrect: true, reaction: "Guilty as charged, time flies when we talk! 🤭" },
@@ -30,7 +30,7 @@ const TRIVIA_QUESTIONS: Question[] = [
     question: "What is our official, undisputed emergency remedy for stressful days and mood swings? 🍟🍦",
     options: [
       { text: "Studying math formulas silently 📚", isCorrect: false, reaction: "As if! Who even does that?! 🤣" },
-      { text: "Snacks, ice cream, venting & jamming to songs! 🍟🎵", isCorrect: true, reaction: "YESSS! The ultimate cure every single time! 💖" },
+      { text: "Snacks, ice cream, venting & jamming to songs!🍨🍟🎵", isCorrect: true, reaction: "YESSS! The ultimate cure every single time! 💖" },
       { text: "Going to sleep quietly at 8:00 PM 😴", isCorrect: false, reaction: "Sleep? At 8 PM? In what universe! 🤪" },
     ],
   },

@@ -41,6 +41,9 @@ export const BestFriendAwardScene: React.FC<BestFriendAwardSceneProps> = ({
     'Error 404: No not found! ❌',
     'You know it is YES! 💕',
     'Impossible! 🫶🏻',
+    'Try again, silly! 😆',
+    'No way! 😎',
+    'Awww...🥰',
   ];
 
   const currentNoPhrase = noPhrases[noHoverCount % noPhrases.length];
