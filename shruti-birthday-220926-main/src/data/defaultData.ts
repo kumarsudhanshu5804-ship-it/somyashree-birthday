@@ -24,7 +24,7 @@ export const DEFAULT_CONFIG: AppConfig = {
     'Never stop being your radiant, kind-hearted, and wonderfully cheerful self!',
     'Or bhi kuch batana h mujhe tum kaho toh main boluuu!!! chalooo bol hi deta huu main naaa 29 oct. 12am ko call karuungaa i hope ki tum call resive karogi😿',
     'mujhe pata h mujhe ye khud dena chahiye lekin main nikki ko de rha huu vo tumhe dedegi but main bhi try karunga tumhe khud se dene ki',
-    'pata h mera aaj result aaya or CGPA bhi bhooth acha aaya h orr haa main apne collage ke ek e-cell( joki startup culture, bisiness ideas aur entrepreneurship ko promote karta h)',
+    'pata h mera aaj result aaya or CGPA bhi bhooth acha aaya h(kyu na aaye tumne wish jo kiya tha toh acchi CGPA toh aana hi tha naaa) orr haa main apne collage ke ek e-cell( joki startup culture, bisiness ideas aur entrepreneurship ko promote karta h)',
     'ishme member banne ke liye apply kiya or fir unhone mujhe interview ke liye call kiya fir maine jake interview diya or unhone mujhe rakh iyaa😄',
     'Basss itnaa hi ab jayadaa bak bak nhi karunga tumhe cake bhi tohhhh cut karna h🤤',
     'Or haaaaa',
